@@ -3,7 +3,10 @@ import Rating from "./Rating";
 function MovieDetail() {
   return (
     <div className="movie-description w-1/4 mt-20">
-      <h1 className="movie-description-title text-5xl mb-5">
+      <h1
+        className="movie-description-title text-5xl mb-5"
+        data-testid="movie-title"
+      >
         John Wick 3: Parabellum
       </h1>
       <Rating colour="white" width="200px" />
