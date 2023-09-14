@@ -1,3 +1,5 @@
+// import { useEffect } from "react";
+
 // eslint-disable-next-line react/prop-types
 function SearchBox({ query, onChange }) {
   return (
