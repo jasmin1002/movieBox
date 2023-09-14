@@ -6,10 +6,6 @@ import Header from "./components/Header";
 import Main from "./components/Main";
 import Loader from "./components/Loader";
 
-// import data from "/data.json";
-
-// console.log(data);
-
 function App() {
   const [query, setQuery] = useState("");
   const [movies, setMovies] = useState([]);
@@ -23,13 +19,11 @@ function App() {
   // const url = data;
   // const url =
   //   "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1";
-
-  // const token =
-  //   "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3MjEyZGU4Mzk4NTAyMTU3N2Y2MjM4MGFiMDk3ZGZkMyIsInN1YiI6IjY0ZmU0NTNjZmZjOWRlMGVlMjA4MTlkOCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.r7ROsMusmuh7xirZqug_fVh4uFCDlijDs0kSLfdFHoc";
+  // console.log(import.meta.env.VITE_TOKEN);
 
   // {
   //   headers: {
-  //     Authorization: `Bearer ${token}`,
+  //     Authorization: `Bearer ${import.meta.env.VITE_TOKEN}`,
   //     accept: "application/json",
   //   },
   // }
@@ -40,7 +34,7 @@ function App() {
   useEffect(function () {
     // console.log(header.current);
     const headerObserverOptions = {
-      rootMargin: "-50% 0px 0px 0px",
+      rootMargin: "-50px 0px 0px 0px",
       threshold: 1,
     };
 
