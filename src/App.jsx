@@ -6,9 +6,12 @@ import Header from "./components/Header";
 import Main from "./components/Main";
 import Loader from "./components/Loader";
 
+import MoviePage from "./page/MoviePage";
+
 function App() {
   const [query, setQuery] = useState("");
   const [movies, setMovies] = useState([]);
+  const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   function handleChange(evt) {
@@ -16,16 +19,14 @@ function App() {
     console.log(evt.target.value);
   }
 
-  // const url = data;
-  // const url =
-  //   "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1";
+  const url_query = `https://api.themoviedb.org/3/search/movie?query=${query}&includes_adult=false&language=en-US&page=1`;
   // console.log(import.meta.env.VITE_TOKEN);
 
   // {
-  //   headers: {
-  //     Authorization: `Bearer ${import.meta.env.VITE_TOKEN}`,
-  //     accept: "application/json",
-  //   },
+  // headers: {
+  //   Authorization: `Bearer ${import.meta.env.VITE_TOKEN}`,
+  //   accept: "application/json",
+  // },
   // }
 
   const header = useRef(undefined);
@@ -56,7 +57,7 @@ function App() {
   }, []);
 
   useEffect(function () {
-    async function fetchMovies() {
+    async function loadMovies() {
       try {
         setIsLoading(true);
         const response = await fetch("./data/data.json");
@@ -72,18 +73,42 @@ function App() {
           setIsLoading(false);
         }, 5000);
       } catch (err) {
+        setIsLoading(false);
+        setError("Something went wrong!");
         console.log(err);
       }
     }
-
-    fetchMovies();
+    // setIsLoading(true);
+    loadMovies();
   }, []);
 
+  useEffect(
+    function () {
+      async function fetchMovies() {
+        try {
+          const response = await fetch(url_query, {
+            headers: {
+              Authorization: `Bearer ${import.meta.env.VITE_TOKEN}`,
+              accept: "application/json",
+            },
+          });
+          const data = await response.json();
+          console.log(data.results);
+        } catch (err) {
+          console.log(err);
+        }
+      }
+
+      if (query.length >= 3) fetchMovies();
+    },
+    [query, url_query]
+  );
+
   return (
-    <div className="app h-screen">
+    <div className="app">
       {isLoading ? <Loader /> : ""}
 
-      {!isLoading ? (
+      {!isLoading && !error ? (
         <Header
           header={header}
           navbar={navbar}
@@ -93,8 +118,10 @@ function App() {
       ) : (
         ""
       )}
-      {!isLoading ? <Main movies={movies} /> : ""}
-      {!isLoading ? <Footer /> : ""}
+      {!isLoading && !error ? <Main movies={movies} /> : ""}
+      {!isLoading && !error ? <Footer /> : ""}
+      {error ? <p>{error}</p> : ""}
+      <MoviePage />
     </div>
   );
 }
